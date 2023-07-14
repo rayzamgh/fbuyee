@@ -1,0 +1,215 @@
+@CHARSET "UTF-8";
+
+.bt{
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 15px;
+  text-align: center;
+  font-size: 12px;
+}
+.bt:hover {
+  background-color: #2e8b57;
+  color: #fff;
+}
+.bt_large{
+  font-size: 14px;
+  padding: 12px 20px;
+}
+.bt_xlarge{
+  font-size: 18px;
+  padding: 0.4em 3em
+}
+.bt, .bt span{
+  border-radius: 3px;
+}
+.bt span{
+  border-top: 1px solid #fff; /* Fallback style */
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  display: block;
+  padding: 0.5em 2.5em;
+
+/* The background pattern */
+  background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(0, 0, 0, 0.05)), color-stop(.25, transparent), to(transparent)),
+                    -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, rgba(0, 0, 0, 0.05)), color-stop(.25, transparent), to(transparent)),
+                    -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.75, transparent), color-stop(.75, rgba(0, 0, 0, 0.05))),
+                    -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.75, transparent), color-stop(.75, rgba(0, 0, 0, 0.05)));
+  background-image: -moz-linear-gradient(45deg, rgba(0, 0, 0, 0.05) 25%, transparent 25%, transparent),
+                    -moz-linear-gradient(-45deg, rgba(0, 0, 0, 0.05) 25%, transparent 25%, transparent),
+                    -moz-linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.05) 75%),
+                    -moz-linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.05) 75%);
+
+/* Pattern settings */
+  background-size: 3px 3px;
+}
+
+a.bt_blue, input.bt_blue {
+  background: #5288a5;
+  color: #fff;
+}
+a.bt_orange, input.bt_orange {
+  background: #ed8b00;
+  color:#fff;
+}
+a.bt_silver, input.bt_silver {
+  background-color: #c7d0d5;
+  color: #77858c;
+}
+a.bt_red, input.bt_red {
+  background: #b73535;
+  color: #fff;
+}
+
+/* 検索まわり */
+a.bt_search {
+  background: #ed8b00;
+  padding: .8em 1.2em;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.bt_disable, .bt_disable:hover {
+  background: #eee;
+  color: #ccc !important;
+  cursor: default;
+}
+#search_bt{
+  border: 0;
+  text-align: center;
+  color: #000000;
+  background-color: #ed8b00;
+  outline: none;
+  cursor: pointer;
+}
+#search_bt:hover{
+  color: #ffffff;
+  background-color: #2e8b57;
+}
+.btn, a.btn {
+  padding: 10px 15px 9px;
+  font-weight: normal;
+  color: #fff;
+  background-color: #ed8b00;
+  border: 0;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  line-height: 1.2;
+}
+a.btn{
+  margin: 2px;
+  padding: 10px 15px;
+  display: inline-block;
+}
+.btn.btn_small{
+  padding: 6px 8px;
+}
+.btn i:before{
+  display: inline-block;
+  font-size: 1.2em;
+}
+.btn.btn_signup{
+  min-width: 150px;
+}
+
+/* カラー */
+.btn.yellow { background-color: #f0bf2b; }
+.btn.pink { background-color: #eb92a3; }
+.btn.blue{ background-color: #5288a5; }
+.btn.silver{ background-color: #c7d0d5; color: #77858c; }
+.btn.orange{ background-color: #ed8b00; }
+.btn.buyout_price, a.btn.buyout_price{
+  letter-spacing: 0.6px;
+  background-color: #cb4c17;
+}
+.btn.buy_point, a.btn.buy_point{
+  letter-spacing: 0.6px;
+  background-color: #ed8b00;
+}
+.btn.btn_link,
+.btn.btn_signup_blue {
+  background-color: #5288a5;
+}
+.btn.btn_facebook {
+  background-color: #3b5998;
+}
+.btn.btn_yahoo_tw {
+  background-color: #380285;
+}
+.btn.btn_tensoRegist {
+  background-color: #1288c1;
+}
+.btn.btn_tenso {
+  background-color: #2381B6;
+}
+.btn.btn--alipayRegist {
+  background-color: #199de0;
+}
+.btn.btn_tenso:hover {
+  background-color: #2075a6;
+}
+.btn.btn_attention {
+  background-color: #b73535;
+}
+/* ボタンhover時はカラー統一（disableを除く） */
+.btn:hover {
+  background-color: #2e8b57;
+  color: #ffffff;
+}
+
+/* disable設定 */
+.btn.disable,
+.btn.disable:hover{
+  background-color: #ccc;
+  color: #fff;
+  cursor: default;
+}
+
+.btn.toggle_btn,
+.btn.toggle_btn:hover{
+  background-color: #e0e0e0;
+  color: #77858c;
+}
+.btn.toggle_btn.watching{
+  color: #eb92a3;
+}
+.btn_large{
+  font-size: 14px;
+}
+.btn_settlement{
+  font-size: 20px;
+}
+.btn_wrap{
+  clear: both;
+}
+.btn_wrap--right {
+  text-align: right;
+}
+.btn_full{
+  width: 100%;
+  display: block;
+}
+.load_more{
+  margin-bottom: 25px;
+}
+.btn_wrap button.btn_cancel,
+.btn_wrap a.btn_cancel{
+  float: left;
+}
+button {
+  outline: none;
+}
+
+/* PayPal認証リンクボタンの中にロゴ */
+a.bt_paypal:before {
+  margin: 0 10px 0 0;
+  content: "";
+  display: inline-block;
+  width: 64px;
+  height: 24px;
+  background: url( ../../images/common/payment_methods/footer/payment_paypal.png);
+  background-size: contain;
+  vertical-align: middle;
+}

@@ -1,0 +1,234 @@
+/*
+YUI 3.4.1 (build 4118)
+Copyright 2011 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+body{font:13px/1.231 arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small}select,input,button,textarea{font:99% arial,helvetica,clean,sans-serif}table{font-size:inherit;font:100%}pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%}
+
+/*
+Copyright 2014 Tenso.com
+http://buyee.jp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Converted from otf files to ttf, eot, woff, and svg files.
+Converted from ttf files to eot, woff, and svg files.
+*/
+
+i.icon{font-size:20px;}
+/* font-face */
+@font-face{font-family:"BuyeeIcons";src:url("../../fonts/buyee/icons.eot");src:url("../../fonts/buyee/icons.eot?#iefix")  format("embedded-opentype"),url("../../fonts/buyee/icons.woff") format("woff"),url("../../fonts/buyee/icons.ttf") format("truetype"), url("../../fonts/buyee/icons.svg#BuyeeIcons") format("svg");font-weight: normal;font-style: normal;}
+/* buyee icon styles */
+i.buyeeicon:before{font-size:20px;}
+[class*="buyeeicon-"]:before{font-family:"BuyeeIcons";font-weight:normal;font-style:normal;text-decoration:inherit;}
+/* icons */
+.buyeeicon-box:before{content:"\e000";}
+.buyeeicon-auction:before{content:"\e001";}
+.buyeeicon-key:before{content:"\e002";}
+.buyeeicon-yahoo:before{content:"\e00f";}
+.buyeeicon-partial:before{content:"\e004";}
+.buyeeicon-circlet-next:before{content:"\e005";}
+.buyeeicon-next:before{content:"\e006";}
+.buyeeicon-info:before{content:"\e007";}
+.buyeeicon-up:before{content:"\e009";}
+.buyeeicon-watch:before{content:"\e010";}
+.buyeeicon-brandnew:before{content:"\e011";}
+.buyeeicon-trash:before{content:"\e012";}
+.buyeeicon-cart:before{content:"\e014";}
+.buyeeicon-target:before{content:"\e064";}
+.buyeeicon-down:before{content:"\e00a";}
+.buyeeicon-list:before{content:"\e00b";}
+.buyeeicon-list-square:before{content:"\e00c";}
+.buyeeicon-shop:before{content:"\e00d";}
+.buyeeicon-shop-search:before{content:"\e902";}
+.buyeeicon-shop-category:before{content:"\e903";}
+.buyeeicon-warning:before{content:"\e600";}
+.buyeeicon-credit:before{content:"\e601";}
+.buyeeicon-paypal:before{content:"\e602";}
+.buyeeicon-tag:before{content:"\e603";}
+.buyeeicon-mobile:before{content:"\e604";}
+.buyeeicon-bids:before{content:"\e605";}
+.buyeeicon-screen:before{content:"\e607";}
+.buyeeicon-calculator:before{content:"\e609";}
+.buyeeicon-block:before{content:"\f00a";}
+.buyeeicon-sort-asc:before{content:"\f160";}
+.buyeeicon-sort-desc:before{content:"\f161";}
+.buyeeicon-facebook:before{content:"\e606";}
+.buyeeicon-twitter:before{content:"\e608";}
+.buyeeicon-weibo:before{content:"\e60a";}
+.buyeeicon-chrome:before{content:"\e60b";}
+.buyeeicon-firefox:before{content:"\e60c";}
+.buyeeicon-safari:before{content:"\e901";}
+.buyeeicon-ie:before{content:"\e60d";}
+.buyeeicon-solid-arrow:before{content:"\e60e";}
+.buyeeicon-process-arrow:before{content:"\e60f";}
+.buyeeicon-pdf:before{content:"\e900";}
+.buyeeicon-addtobuyee:before{content:"\e904";}
+.buyeeicon-camera:before{content:"\e905";}
+.buyeeicon-images:before{content:"\e906";}
+.buyeeicon-blog:before{content:"\e90f";}
+
+/* font-face */
+@font-face{font-family:"GeneralFoundicons";src:url("../../fonts/general/foundicons.eot");src:url("../../fonts/general/foundicons.eot?#iefix")  format("embedded-opentype"),url("../../fonts/general/foundicons.woff") format("woff"),url("../../fonts/general/foundicons.ttf") format("truetype"), url("../../fonts/general/foundicons.svg#GeneralFoundicons") format("svg");font-weight: normal;font-style: normal;}
+/* global foundicon styles */
+[class*="generalicon-"]:before{font-family:"GeneralFoundicons";font-weight:normal;font-style:normal;text-decoration:inherit;}
+/* icons ※buyee.jpで使用中 */
+.generalicon-star:before{content:"\f002";}
+.generalicon-checkmark:before{content:"\f005";}
+.generalicon-remove:before{content:"\f006";}
+.generalicon-page:before{content:"\f009";}
+.generalicon-edit:before{content:"\f01a";}
+.generalicon-lock:before{content:"\f01b";}
+.generalicon-unlock:before{content:"\f01c";}
+.generalicon-idea:before{content:"\f022";}
+.generalicon-clock:before{content:"\f029";}
+.generalicon-search:before{content:"\f02e";}
+
+@font-face{font-family:"SocialFoundicons";src:url("../../fonts/social/foundicons.eot");src:url("../../fonts/social/foundicons.eot?#iefix")  format("embedded-opentype"),url("../../fonts/social/foundicons.woff") format("woff"),url("../../fonts/social/foundicons.ttf") format("truetype"), url("../../fonts/social/foundicons.svg#SocialFoundicons") format("svg");font-weight: normal;font-style: normal;}
+/* global foundicon styles */
+[class*="socialicon-"]:before{font-family:"SocialFoundicons";font-weight:normal;font-style:normal;text-decoration:inherit;}
+/* icons ※faq.buyee.jpで使用中 */
+.socialicon-torso:before{content:"\f019";}
+
+/* font-face */
+@font-face{font-family:"g-feather";src:url("../../fonts/g-feather/icons.eot");src:url("../../fonts/g-feather/icons.eot?#iefix")  format("embedded-opentype"),url("../../fonts/g-feather/icons.woff") format("woff"),url("../../fonts/g-feather/icons.ttf") format("truetype"), url("../../fonts/g-feather/icons.svg#g-feather") format("svg");font-weight: normal;font-style: normal;}
+
+[class*="g-feather-"]::before{font-family:"g-feather";font-weight:normal;font-style:normal;text-decoration:inherit;}
+/* icons */
+.g-feather-alert-triangle::before {
+  content: '\e900';
+}
+.g-feather-bell-active::before {
+  content: '\e901';
+}
+.g-feather-bell::before {
+  content: '\e902';
+}
+.g-feather-bidding::before {
+  content: '\e903';
+}
+.g-feather-book::before {
+  content: '\e904';
+}
+.g-feather-calculator::before {
+  content: '\e905';
+}
+.g-feather-camera::before {
+  content: '\e906';
+}
+.g-feather-check-circle::before {
+  content: '\e907';
+}
+.g-feather-check::before {
+  content: '\e908';
+}
+.g-feather-chevron-down::before {
+  content: '\e909';
+}
+.g-feather-chevron-left::before {
+  content: '\e90a';
+}
+.g-feather-chevron-right::before {
+  content: '\e90b';
+}
+.g-feather-chevron-up::before {
+  content: '\e90c';
+}
+.g-feather-clock::before {
+  content: '\e90d';
+}
+.g-feather-crosshair::before {
+  content: '\e90e';
+}
+.g-feather-external-link::before {
+  content: '\e90f';
+}
+.g-feather-file-pdf::before {
+  content: '\e910';
+}
+.g-feather-file-text::before {
+  content: '\e911';
+}
+.g-feather-globe::before {
+  content: '\e912';
+}
+.g-feather-grid::before {
+  content: '\e913';
+}
+.g-feather-home::before {
+  content: '\e914';
+}
+.g-feather-image::before {
+  content: '\e915';
+}
+.g-feather-info::before {
+  content: '\e916';
+}
+.g-feather-list::before {
+  content: '\e917';
+}
+.g-feather-loader::before {
+  content: '\e918';
+}
+.g-feather-log-in::before {
+  content: '\e919';
+}
+.g-feather-log-out::before {
+  content: '\e91a';
+}
+.g-feather-menu::before {
+  content: '\e91b';
+}
+.g-feather-message-circle::before {
+  content: '\e91c';
+}
+.g-feather-package::before {
+  content: '\e91d';
+}
+.g-feather-plus-circle::before {
+  content: '\e91e';
+}
+.g-feather-rotate-cw::before {
+  content: '\e91f';
+}
+.g-feather-search::before {
+  content: '\e920';
+}
+.g-feather-shopping-bag::before {
+  content: '\e921';
+}
+.g-feather-shopping-cart::before {
+  content: '\e922';
+}
+.g-feather-star-active::before {
+  content: '\e923';
+}
+.g-feather-star::before {
+  content: '\e924';
+}
+.g-feather-tag::before {
+  content: '\e925';
+}
+.g-feather-trash-2::before {
+  content: '\e926';
+}
+.g-feather-user::before {
+  content: '\e927';
+}
+.g-feather-x::before {
+  content: '\e928';
+}
+.g-feather-more-horizontal::before {
+  content: '\e929';
+}

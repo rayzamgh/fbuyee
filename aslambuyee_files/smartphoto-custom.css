@@ -1,0 +1,50 @@
+.smartphoto {
+  background-color: rgba(0, 0, 0, .5);
+  z-index: 10000;
+}
+.smartphoto-header {
+  background-color: rgba(0, 0, 0, 0);
+}
+.smartphoto-nav {
+  z-index: 105;
+  background-color: rgba(0, 0, 0, .2);
+  padding: 10px 0 ;
+}
+.smartphoto-nav a {
+  background-color: rgba(0, 0, 0, 0);
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 1;
+}
+.smartphoto-nav a:focus {
+  opacity: 1;
+  outline: 2px solid #eb9200;
+}
+.smartphoto-nav a.current {
+  opacity: 1;
+  outline: 2px solid #eb9200;
+  outline-offset: -2px;
+}
+.smartphoto-nav ul {
+  overflow-x: auto;
+}
+.smartphoto-nav li {
+  width: 40px;
+  height: 40px;
+}
+.smartphoto-arrows li {
+  background-color: hsla(0, 0%, 0%, .2);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 20px;
+}
+.smartphoto-loader {
+  border: 2px solid #fff;
+  border-right-color: transparent;
+}
+@media (min-width: 768px) {
+  .smartphoto-nav li {
+    width: 80px;
+    height: 80px;
+  }
+}

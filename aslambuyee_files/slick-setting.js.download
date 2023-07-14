@@ -1,0 +1,12 @@
+$(function(){
+  var $bannerCarousel = $('.banner-top-carousel');
+  $bannerCarousel.find('.list').css('display','block');
+  $bannerCarousel.slick({
+    dots: true,
+    infinite: true,
+    speed: 500,
+    cssEase: 'linear',
+    autoplay: true,
+    autoplaySpeed: 3000,
+  });
+});

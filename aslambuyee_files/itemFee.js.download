@@ -1,0 +1,111 @@
+(function($){
+  var calcAuctionAmount  = {
+    networkErrMessage : 'aip cannot connection system error',
+    apiUrl : '/api/v1/auction/total_amount',
+    async: false,
+    exec : function(price, quantity, planId, buyeeFeeCouponId, internationalDeliveryFeeCouponId, itemPriceCouponId, point, auctionId, isShippingCost, memberDeliveryAddressLogId, paymentMethodType, target, canBuyPoint, callback) {
+      var post = {
+        price: price,
+        quantity: quantity,
+        planId: planId,
+        buyeeFeeCouponId: buyeeFeeCouponId,
+        internationalDeliveryFeeCouponId: internationalDeliveryFeeCouponId,
+        itemPriceCouponId: itemPriceCouponId,
+        auctionId: auctionId,
+        isShippingCost: isShippingCost,
+        memberDeliveryAddressLogId: memberDeliveryAddressLogId,
+        paymentMethodType: paymentMethodType
+      };
+
+      $.getJSON(this.apiUrl, post)
+        .done(function(json){
+
+          if (!json['data']['success']) {
+            $('.point_shortage_display').addClass('hidden');
+            $('.point_settlement_display').removeClass('hidden');
+
+            return;
+          }
+
+          var totalAmount = json['data']['total_amount'];
+
+          var shortage = totalAmount - point;
+
+          if (0 < shortage) {
+            $('.point_shortage_display').removeClass('hidden');
+
+            if (canBuyPoint === true) {
+              $('.point_settlement_display').attr('disabled', true).addClass('disable');
+            } else {
+              $('.js_bid_btn').attr('disabled', true).addClass('disable');
+            }
+          } else {
+            $('.point_shortage_display').addClass('hidden');
+
+            if (canBuyPoint === true) {
+              $('.point_settlement_display').removeClass('hidden');
+            } else {
+              $('.js_bid_btn').attr('disabled', false).removeClass('disable');
+            }
+          }
+
+          if (target !== null) {
+            target.val(totalAmount);
+          }
+
+          callback(json['data']);
+
+          return totalAmount;
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+          window.alert($.calcAuctionAmount.networkErrMessage);
+        });
+    }
+  };
+
+  var getPriceInfo  = {
+    networkErrMessage : 'aip cannot connection system error',
+    apiUrl : '/api/v1/auction/total_amount',
+    async: false,
+    exec : function(price, quantity, planId, buyeeFeeCouponId, internationalDeliveryFeeCouponId, itemPriceCouponId, point, auctionId, isShippingCost, memberDeliveryAddressLogId, paymentMethodType, target, callback) {
+      var post = {
+        price: price,
+        quantity: quantity,
+        planId: planId,
+        buyeeFeeCouponId: buyeeFeeCouponId,
+        internationalDeliveryFeeCouponId: internationalDeliveryFeeCouponId,
+        itemPriceCouponId: itemPriceCouponId,
+        auctionId: auctionId,
+        isShippingCost: isShippingCost,
+        memberDeliveryAddressLogId: memberDeliveryAddressLogId,
+        paymentMethodType: paymentMethodType
+      };
+      $.getJSON(this.apiUrl, post)
+        .done(function(json){
+
+          if (!json['data']['success']) {
+            $('.point_shortage_display').addClass('hidden');
+            $('.point_settlement_display').removeClass('hidden');
+
+            return;
+          }
+
+          var totalAmount = json['data']['total_amount'];
+
+          if (target !== null) {
+            target.val(totalAmount);
+          }
+
+          callback(json['data']);
+
+          return totalAmount;
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+          window.alert($.calcAuctionAmount.networkErrMessage);
+        });
+    }
+  };
+
+  $.calcAuctionAmount = calcAuctionAmount;
+  $.getPriceInfo = getPriceInfo;
+}(jQuery))

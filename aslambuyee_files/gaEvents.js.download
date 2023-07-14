@@ -1,0 +1,278 @@
+// Service type
+const BO_ST_YAHOO_AUCTION = 1;
+const BO_ST_MERCAI        = 18;
+
+// Push data product click
+function pushDataLayerProductClick(item) 
+{
+  if (item.fxInfo) {
+    item.price = transferUsdToJpy(item.price, item.fxInfo);
+  }
+
+  // Define ecommerce object (UA)
+  var itemDataUA = {
+    'id': item.id,
+    'name': item.name,
+    'price': parseInt(item.price),
+    'quantity': parseInt(item.quantity),
+    'affiliation': item.affiliation,
+    'dimension1': item.dimension1,
+    'dimension2': item.dimension2,
+    'dimension4': item.dimension4,
+    'dimension7': item.partnerSellerId,
+    'position': item.position
+  }
+
+  // Define ecommerce object (GA4)
+  var itemDataGa4 = {
+    'item_id': item.id,
+    'item_name': item.name,
+    'price': parseInt(item.price),
+    'quantity': parseInt(item.quantity),
+    'affiliation': item.affiliation,
+    'dimension1': item.dimension1,
+    'dimension2': item.dimension2,
+    'dimension4': item.dimension4,
+    'dimension7': item.partnerSellerId,
+    'index': item.position
+  }
+
+  var dataLayer = window.dataLayer || [];
+  // UA
+  dataLayer.push({ ecommerce: null }); // Clear the previous ecommerce object.
+  dataLayer.push({
+    'event': 'productClick',
+    'ecommerce': {
+    'currencyCode': item.currencyCode,
+      'click': {    
+        'actionField': {'list': item.list},                         
+        'products': [itemDataUA]
+      }
+    }
+  });
+
+  // GA4
+  dataLayer.push({ ecommerce: null }); // Clear the previous ecommerce object.
+  dataLayer.push({
+    'event': 'select_item',
+    'ecommerce': {
+      'currency': item.currencyCode,
+      'item_list_name': item.list,
+      'items': [itemDataGa4],
+      'promotion_id': item.promotionId,
+      'promotion_name': item.promotionName,
+    }
+  });
+  dataLayer.push({ ecommerce: null }); // Clear the ecommerce object after product click event.
+}
+
+// Transfer price of item from usd to jpy
+function transferUsdToJpy(itemPriceUsd, fxInfo)
+{
+  usdToJpyRate = fxInfo['rate'];
+  digits = fxInfo['digits'];
+  var itemPriceJpy = itemPriceUsd * usdToJpyRate;
+  return rounding(itemPriceJpy, digits);
+}
+
+// Rounding amount by digits
+function rounding(amount, digits)
+{
+  amount = amount * Math.pow(10, digits);
+  amount = amount.toString();
+  amount = Math.ceil(amount);
+
+  return amount / Math.pow(10, digits);
+}
+
+/**
+ * Push user data when a user completes a successful login
+ *
+ * @param  number memberId
+ * @param  number countMercariOrdersByMemberId
+ * @param  number countYacOrdersByMemberId
+ * @param  string returningVisitor
+ * @param  string newVisitor
+ * @return
+ */
+
+function pushUserDataLogin(memberId, countMercariOrdersByMemberId, countYacOrdersByMemberId, returningVisitor, newVisitor)
+{
+  var dataLayer = window.dataLayer || [];
+  dataLayer.push({ userScoped: null }); // Clear the previous user scoped object.
+  dataLayer.push({
+    'event': 'userData',
+    'userScoped': {
+      'dimension5': memberId,
+      'dimension11': 0 < countMercariOrdersByMemberId ? returningVisitor : newVisitor,
+      'dimension12': countMercariOrdersByMemberId,
+      'dimension13': 0 < countYacOrdersByMemberId ? returningVisitor : newVisitor,
+      'dimension14': countYacOrdersByMemberId
+    }
+  });
+  dataLayer.push({ userScoped: null }); // Clear the user scoped object after getting behaviors of users.
+}
+
+/**
+ * Push user data when a user sign up completely
+ *
+ * @param  number memberId
+ * @param  string newVisitor
+ * @return
+ */
+
+ function pushUserDataSignUpComplete(memberId, newVisitor)
+ {
+   var dataLayer = window.dataLayer || [];
+   dataLayer.push({ userScoped: null }); // Clear the previous user scoped object.
+   dataLayer.push({
+     'event': 'userData',
+     'userScoped': {
+       'dimension5': memberId,
+       'dimension11': newVisitor,
+       'dimension12': 0,
+       'dimension13': newVisitor,
+       'dimension14': 0
+     }
+   });
+   dataLayer.push({ userScoped: null }); // Clear the user scoped object after getting behaviors of users.
+ }
+ 
+/**
+ * Push user data when a user completes a successful order
+ *
+ * @param  number memberId
+ * @param  number countOrders
+ * @param  string returningVisitor
+ * @param  string newVisitor
+ * @param  string serviceType
+ * @return
+ */
+
+function pushUserDataByService(memberId, countOrders, returningVisitor, newVisitor, serviceType)
+{
+  var userScoped = {
+    'dimension5': memberId
+  };
+
+  switch (parseInt(serviceType)) {
+    // Yahoo auction
+    case BO_ST_YAHOO_AUCTION:
+      userScoped.dimension13 = 0 < countOrders ? returningVisitor : newVisitor;
+      userScoped.dimension14 = countOrders;
+      break;
+    // Mercari
+    case BO_ST_MERCAI:
+      userScoped.dimension11 = 0 < countOrders ? returningVisitor : newVisitor;
+      userScoped.dimension12 = countOrders;
+      break;
+    default:
+      break;
+  }
+  
+  // Tracking user type and number of orders
+  var dataLayer = window.dataLayer || [];
+  dataLayer.push({ userScoped: null }); // Clear the previous user scoped object.
+  dataLayer.push({
+    'event': 'userData',
+    'userScoped': userScoped
+  });
+  dataLayer.push({ userScoped: null }); // Clear the user scoped object after getting behaviors of users.
+}
+
+// Push data view product details UA
+function pushUaDataViewProductDetails(item)
+{
+  // Define ecommerce object (UA)
+  var itemDataUA = {
+    'id': item.id,
+    'name': item.name,
+    'price': parseInt(item.price),
+    'quantity': parseInt(item.quantity),
+    'affiliation': item.affiliation,
+    'dimension1': item.dimension1,
+    'dimension2': item.dimension2,
+    'dimension4': item.dimension4,
+    'dimension7': item.dimension7,
+  }
+
+  var dataLayer = window.dataLayer || [];
+  dataLayer.push({ ecommerce: null }); // Clear the previous ecommerce object.
+  dataLayer.push({
+    'event': 'detail',
+    'ecommerce': {
+      'currencyCode': item.currencyCode,
+      'detail': {
+        'products': [itemDataUA]
+      }
+    }
+  });
+  dataLayer.push({ ecommerce: null }); // Clear the ecommerce object after view product detail event.
+}
+
+// Push data view product details GA4
+function pushGa4DataViewProductDetails(item)
+{
+  // Define ecommerce object (GA4)
+  var itemDataGa4 = {
+    'item_id': item.id,
+    'item_name': item.name,
+    'price': parseInt(item.price),
+    'quantity': parseInt(item.quantity),
+    'affiliation': item.affiliation,
+    'dimension1': item.dimension1,
+    'dimension2': item.dimension2,
+    'dimension4': item.dimension4,
+    'dimension7': item.dimension7,
+    'item_list_name': item.itemListName,
+  }
+
+  var dataLayer = window.dataLayer || [];
+  dataLayer.push({ ecommerce: null }); // Clear the previous ecommerce object.
+  dataLayer.push({
+    'event': 'view_item',
+    'ecommerce': {
+      'currency': item.currencyCode,
+      'value': parseInt(item.price) * parseInt(item.quantity),
+      'items': [itemDataGa4],
+      'promotion_id': item.promotionId,
+      'promotion_name': item.promotionName,
+    }
+  });
+  dataLayer.push({ ecommerce: null }); // Clear the ecommerce object after view product detail event.
+}
+
+// UA add to cart event with array items
+function pushUaDataAddToCart(items, currencyCode) 
+{
+  // Push data
+  var dataLayer = window.dataLayer || [];
+  dataLayer.push({ ecommerce: null }); // Clear the previous ecommerce object.
+  dataLayer.push({
+    'event': 'addToCart',
+    'ecommerce': {
+      'currencyCode': currencyCode,
+      'add': {                             
+        'products': items
+      }
+    }
+  });
+  dataLayer.push({ ecommerce: null }); // Clear the ecommerce object after add to cart event.
+}
+
+// GA4 add to cart event with array items
+function pushGa4DataAddToCart(items, currencyCode, totalValue)
+{
+  // Push data
+  var dataLayer = window.dataLayer || [];
+  dataLayer.push({ ecommerce: null }); // Clear the previous ecommerce object.
+  dataLayer.push({
+    'event': 'add_to_cart',
+    'ecommerce': {
+      'currency': currencyCode,
+      'value': totalValue,
+      'items': items
+    }
+  });
+  dataLayer.push({ ecommerce: null }); // Clear the ecommerce object after add to cart event.
+}

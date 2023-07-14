@@ -1,0 +1,100 @@
+.chtbt-notifications-wrapper, .wrapper {
+	font-size:100%;	
+}
+.content .bubble.user-says {
+	font-size: 0.9em;	
+}
+
+textarea {
+	font-size:1.12em;		/*	18px;	*/
+}
+.chtbt-notification-text {
+	font-size: 0.875em; 	/*	14px;	*/
+}
+.chatprompt .chtbt-notification-badge {
+    font-size: 0.9em;		/*	14.4px;	*/
+    line-height: 1.12em;	/*	18px;	*/
+}
+.card-text:last-child {
+    font-size: 0.8125em		/*	13px;	*/
+}
+.list-group-item {
+    font-size: 0.8125em		/*	13px;	*/
+}
+.aiagentbot-show-welcome-message {
+  font-size: 0.9375em;		/*	15px;	*/
+}
+.chatprompt.aiagentbot-alert-badge .aiagentbot-launch-icon::after {
+  font-size: 0.625em;		/*	10px;	*/
+  line-height: 1.0625em;	/*	17px;	*/
+}
+textarea.messageText {
+  font-size: 0.875em; 		/*	14px;	*/
+}
+.quick-replies ul li a.quick-reply i {
+	font-size: 1.12em;		/*	18px;	*/
+}
+.quick-replies ul li a {
+  font-size: 0.9em;
+}
+.quick-replies ul li {
+  font-size: 0.9em; 		/*	14.4px;	*/
+  /*	line-height: 2.7em;		43px;	*/
+}
+.quick-replies-vertical ul li a.quick-reply i {
+	font-size: 1.12em;		/*	18px;	*/
+}
+.quick-replies-vertical ul li {
+  list-style: none;
+  font-size: 0.9em; 		/*	14.4px;	*/
+  /*	line-height: 2.7em;		43px;	*/
+}
+.message-holder.action-flds input[type="text"] {
+	font-size: 0.9em;
+}
+.powered-by{
+	font-size:0.5625em;		/*	9px;	*/
+}
+a.external-link i {
+	font-size: 1.12em;		/*	18px;	*/
+}
+a.external-link { 
+  font-size: 0.9em; 		/*	14.4px;	*/
+  /*	line-height: 2.7em;		43px;	*/
+}
+#modal-close::before {
+  font-size: 0.75em;		/*	12px;	*/
+}
+.form-error-message{
+	font-size: 0.9em;
+}
+.error-message{
+   font-size: 0.875em; 		/*	14px;	*/
+}
+
+.link-wrap {
+	font-size: 0.875em; 	/*	14px;	*/
+    font-weight: 400;
+    /*	line-height: 1.42857143;	*/
+}
+.carousel-caption p {
+	font-size: .9rem;
+}
+.carousel-caption h3,
+.carousel-caption .h3 {
+	font-size: 1rem;
+}
+.content .bubble {
+  font-size: 0.9em;
+}
+
+.action-sections .message-holder i {
+	font-size:100%;	
+}
+
+.bot_time{
+	font-size: 0.6em		
+}
+.user_time{
+	font-size: 0.6em		
+}

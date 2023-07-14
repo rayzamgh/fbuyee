@@ -1,0 +1,163 @@
+var buyee = buyee || {};
+
+(function(buyee, $){
+  if ($.event.special.removeModal !== undefined) {
+    console.error('[CAUTION] `jQuery.event.special.removeModal` will be overwritten.');
+  }
+
+  $.event.special.removeModal = {};
+
+  var Modal = (function(){
+    function Modal($modal, $submit){
+      this.modal         = $modal;
+      this.submit        = $submit;
+      this.enable_submit = false;
+    };
+
+    // submit enable
+    Modal.prototype.enableSubmit = function(){
+      this.enable_submit = true;
+      this.submit.removeClass('disable');
+      this.submit.addClass('blue');
+    };
+
+    // submit disable
+    Modal.prototype.disableSubmit = function(){
+      this.enable_submit = false;
+      this.submit.removeClass('blue');
+      this.submit.addClass('disable');
+    };
+
+    // modal remove
+    Modal.prototype.remove = function(){
+      var handlerObjects = $._data(this.modal[0], 'events') || {};
+      var removeModalHandlers = handlerObjects.removeModal || [];
+      var length = removeModalHandlers.length;
+      var handlers = [];
+
+      for (var i = 0; i < length; i++) {
+        handlers.push(removeModalHandlers[i].handler);
+      }
+
+      this.modal.remove();
+
+      for (var i = 0; i < handlers.length; i++) {
+        if (typeof handlers[i] !== 'function') {
+          continue;
+        }
+
+        handlers[i]();
+      }
+    };
+
+    // banned product
+    Modal.prototype.confirmBannedProduct = function(){
+      if(this.enable_submit == false){
+        return false;
+      }
+
+      var self = this;
+
+      buyee.Ajax.get(
+        buyee.Ajax.generateApiUrl('confirm/banned_product_desc'),
+        {},
+        {
+          success: function(result, dataType){
+            self.remove();
+          },
+          error: function(result, dataType){
+            self.remove();
+          }
+        }
+      );
+    };
+
+    // terms of service
+    Modal.prototype.agreeTerms = function(){
+      if(this.enable_submit == false){
+        return false;
+      }
+
+      var self = this;
+
+      buyee.Ajax.get(
+        buyee.Ajax.generateApiUrl('agree/terms'),
+        {},
+        {
+          success: function(result, dataType){
+            self.remove();
+          },
+          error: function(result, dataType){
+            self.remove();
+          }
+        }
+      );
+    }
+
+    return Modal;
+  })();
+
+  buyee.Modal = Modal;
+})(buyee, jQuery);
+
+buyee.modal = new buyee.Modal();
+
+
+
+
+
+
+
+
+
+
+
+$(function(){
+  var getCheckedLength = function(){
+    return $('#banned_product_list .banned_product:checked').length;
+  };
+
+  var $button = $('#mypageTop_alert_close');
+  var checkboxesCount = $('#banned_product_list .banned_product').length;
+
+
+  $button.on('click', function(){
+    if(checkboxesCount == getCheckedLength()){
+      $.ajax({
+        type:    'GET',
+        url:      $('#banned_product_url').val(),
+        data:     {token: $('#banned_product_token').val()},
+        dataType: 'json',
+
+        beforeSend: function(){
+          $('#loading').show();
+        },
+
+        success: function(result, dataType){
+          $('div#mypageTop_alert_wrap').remove();
+        },
+        error: function(result, dataType){
+          $('div#mypageTop_alert_wrap').remove();
+        },
+        complete: function(){
+          $('#loading').hide();
+        }
+      });
+    }
+  });
+
+  $('#banned_product_list').on('click', '.banned_product', function(){
+    if(checkboxesCount == getCheckedLength()){
+      $button.removeClass('disable');
+      $button.addClass('blue');
+    }
+    else{
+      $button.removeClass('blue');
+      $button.addClass('disable');
+    }
+  });
+
+  $('#banned_product_list').on('click', 'dd a', function(){
+    $(this).attr('target', '_blank');
+  })
+});

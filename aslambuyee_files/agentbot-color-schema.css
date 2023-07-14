@@ -1,0 +1,281 @@
+body {
+  background:   background-color: transparent !important;
+
+}
+
+a {
+  color: #6f8794;
+}
+a:hover {
+  color:#f1a319;
+}
+.message-holder {
+  border: 0px solid #ddd;
+ /* border-top: 0px solid rgba(0, 0, 0, 0.1);*/
+}
+.typing-indicator {
+  background-color: #fff;
+}
+.typing-indicator span {
+  background-color: #9E9EA1;
+}
+#modal-container {
+	background: #fff;
+}
+.chatprompt.aiagentbot-alert-badge .aiagentbot-launch-icon::after {
+  background: #4b4e52;
+  color: #fff;
+}
+.aiagentbot-show-welcome-message {
+  color: #333;
+  background: #fff;
+}
+.aiagentbot-show-welcome-message:after {
+  border-color: rgba(255, 255, 255, 0);
+  border-top-color: #ffffff;
+}
+.card {
+	background: #fff none repeat scroll 0 0;
+    border: 1px solid #e5e5e5;
+}
+.card-block {
+    background: #fff none repeat scroll 0 0;
+}
+.card-footer {
+    border-top: 1px solid #e5e5e5;
+	background: #fff none repeat scroll 0 0;
+}
+.list-group-item {
+    color: #0072bb;
+}
+.chatprompt .chtbt-notification-badge {
+	background: #f1a319;
+    color: #fff;
+	/*border:1px solid #c7840e;*/
+}
+
+.aiagentbot-launch-icon .icon-logo-2, .aiagentbot-launch-icon .icon-logo-10, .aiagentbot-launch-icon .icon-logo-11, .aiagentbot-launch-icon .icon-agent-logo-1, .aiagentbot-launch-icon .icon-agent-logo-4, .aiagentbot-launch-icon .icon-agent-logo-11, .aiagentbot-launch-icon .icon-logo{
+	/*color: #fff;
+    background: #f1a319;*/	/*linear-gradient(to right, #49a7fe , #3384cf);*/
+	/*border:1px solid #c7840e;*/
+	color: #ec9203;
+    background: #ffffff;
+    box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+	
+}
+
+.b-wrap .icon-logo-2, .b-wrap .icon-logo-10, .b-wrap .icon-logo-11, .b-wrap .icon-agent-logo-1, .b-wrap .icon-agent-logo-4, .b-wrap .icon-agent-logo-11, .b-wrap .icon-logo{
+	/*	color: #d65b8d;	*/
+	background: #f1a319;	/*-webkit-linear-gradient(#49a7fe, #3384cf);*/
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: #f1a319;
+}
+
+.chtbt-notifications-wrapper {
+    background-color: #fff;
+}
+.chtbt-notifications-wrapper:hover .chtbt-notification-closebtn {
+	color: #1d1d26;
+}
+.chtbt-notification-text {
+    color: #3b444f;
+}
+
+/*		**********************************************		*/
+
+.content .bubble.bot-says {
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  color: #000;
+}
+.carousel-item {
+	background-color: #ecf2f5;
+	border: 1px solid #dbe6eb;
+}
+.link-wrap {
+	color: #fff;
+    background-color: #6f8794;
+    border-color: #6f8794;
+	border-radius: 6px;
+	border:1px solid #6f8794;
+	/*font-weight:bold;*/
+}
+.link-wrap:hover {
+	color: #6f8794;
+    background-color: #fff;
+	border:1px solid #6f8794;
+	/*font-weight:bold;*/
+}
+#modal-header {
+	background: #f1a319;		/*linear-gradient(to right, #269cb6 , #9838b1);	*/
+	border-bottom: 1px solid #e2e2e2;
+}
+#title {
+	color: #fff;
+}
+#modal-close::before {
+  border: 0px solid #ccc;
+  color: #fff;
+  font-weight:bold;
+}
+a.external-link {
+  color: #fff;
+  border: 1px solid #6f8794;
+  background-color: #6f8794; 
+  border-radius: 6px; 
+  /*font-weight:bold;*/
+}
+a.external-link:hover {
+  color: #6f8794;
+  border: 1px solid #6f8794;
+  background-color: #fff;
+  /*font-weight:bold;*/
+}
+a.external-link i {
+	color: #d65b8d;
+}
+a.external-link:hover i {
+	color: #fff;
+}
+.powered-by{
+	color:#ccc;
+	border-top:1px solid #e0e0e0;
+}
+.action-sections{
+	background-color: #f4f4f4;
+}
+.action-sections .message-holder{
+    border: 0px solid #ddd;
+}
+.action-sections .message-holder i{
+  color:#999999;
+}
+
+.action-sections .message-mic i{
+  color:#fff;
+}
+.action-sections .message-mic button{
+    background: transparent;
+	background-color:#007bfc;
+}
+.message-holder .footer-actions #button-actions{;
+  background: transparent;
+}
+.quick-replies ul li a {
+  color: #fff;
+  border: 1px solid #6f8794;
+  background-color: #6f8794;  
+  border-radius: 6px;
+  /*font-weight:bold;*/
+}
+.quick-replies ul li a:hover {
+  color: #6f8794;
+  border: 1px solid #6f8794;
+  background-color: #fff;
+  /*font-weight:bold;*/
+}
+.quick-replies ul li a.quick-reply i {
+	color: #fff;
+}
+.quick-replies ul li a.quick-reply:hover i {
+	color: #6f8794;
+}
+.quick-replies ul li.link a {
+  color: #008aea;
+  border-color: #fff;
+  background: #fff;
+}
+.quick-replies-vertical ul li a {
+  color: #fff;
+  border: 1px solid #6f8794;
+  background-color: #6f8794;  
+  border-radius: 6px;
+  /*font-weight:bold;*/
+}
+.quick-replies-vertical ul li a:hover {
+  color: #6f8794;
+  border: 1px solid #6f8794;
+  background-color: #fff;
+  /*font-weight:bold;*/
+}
+.quick-replies-vertical ul li a.quick-reply i {
+	color: #d65b8d;
+}
+.quick-replies-vertical ul li a.quick-reply:hover i {
+	color: #fff;
+}
+.quick-replies-vertical ul li.link a {
+  color: #008aea;
+  border-color: #fff;
+  background: #fff;
+}
+
+.user-says-inner {
+	background: #fff;
+}
+.content .bubble.user-says {
+  background: #f8f9fa;	/*linear-gradient(to right, #49a7fe , #3384cf);*/
+  border:1px solid #e6e6e6;
+  color: #000;
+}
+
+
+/*	*******************************************		*/
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #ccc;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #ccc;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #ccc;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #ccc;
+}
+
+.message-sent{
+	/*color:#32ce99;
+	text-shadow: 0px 0px 5px #fff;*/
+}
+.message-undelivered-icon{
+	color:#cc0000;
+	text-shadow: 0px 0px 5px #fff;
+}
+.message-undelivered{
+	color:#cc0000;
+}
+
+.content .bubble.bot-says .product-description-wrap {
+	border-bottom:1px solid #e6e6e6;
+}
+a.external-link-sec {
+  color: #6f8794;
+  border: 1px solid #6f8794;
+  background-color: #fff; 
+  border-radius: 6px; 
+}
+a.external-link-sec:hover {
+  color: #fff;
+  border: 1px solid #6f8794;
+  background-color: #6f8794
+}
+a.external-link-sec i {
+	color: #6f8794;
+}
+a.external-link-sec:hover i {
+	color: #ffffff;
+}
+
+.voice_zoom_in_circle, .voice_zoom_in_circle_1 {
+ background: #f1a319;
+}
+.voice_recording #wave {
+    fill: #f1a319;
+}
+
+.action-section-welcome{background:#fff;}
+.welcome_txt_field input{
+    border-bottom: 1px solid #6f8794;
+}

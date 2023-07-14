@@ -1,0 +1,1684 @@
+// Easingの追加
+jQuery.easing.quart = function (x, t, b, c, d) {
+  return -c * ((t=t/d-1)*t*t*t - 1) + b;
+};
+
+$.fn.buyeeSearchSubmit = function(Url, alliance, urlParams) {
+
+  var url = Url.get(function(alliance, urlParams) {
+
+    var isExist = function(param) {
+      return (param !== undefined && param !== '' && param !== null);
+    };
+
+    var _routingUrls = this.list[alliance];
+    if (_routingUrls === undefined) {
+      return '';
+    }
+
+    var useParamsSetting = {
+      query:           true,
+      seller:          true,
+      category:        true,
+      sort:            true,
+      translationType: true
+      //brand:           true
+    };
+
+    var addQueryStringFromParams = function(url, urlParams) {
+      var urlTrimmedParams = {};
+      $.each(urlParams, function(urlParamName, urlParamValue){
+        if( useParamsSetting[urlParamName] && isExist(urlParamValue) ){
+          urlTrimmedParams[urlParamName] = urlParamValue;
+        }
+      });
+
+      var queryString = decodeURIComponent($.param(urlTrimmedParams));
+      if ( queryString === '' ) {
+        return url;
+      }
+      if ( $.inArray('?', url) == -1 ) {
+        return url + '?' + queryString;
+      }
+      return url + '&' + queryString;
+    };
+
+    var selectListViewTypeForAuction = function(urlParams) {
+      if (urlParams.isGoodSellersView) return 'goodSellers';
+      if (isExist(urlParams.query)) return 'search';
+      if (isExist(urlParams.category) && isExist(urlParams.seller))  return 'search';
+      if (isExist(urlParams.seller)) return 'seller';
+      if (isExist(urlParams.category)) return 'category';
+      return 'home';
+    };
+
+    var selectListViewTypeForShopping = function(urlParams) {
+      if (isExist(urlParams.brand) && isExist(urlParams.seller))  return 'brand';
+      if (isExist(urlParams.seller)) return 'seller';
+      if (isExist(urlParams.category)) return 'category';
+      if (isExist(urlParams.query)) return 'search';
+      return 'home';
+    };
+
+    _routingUrls.home  = this.list.index;
+    _routingUrls.brand = location.pathname;
+    urlParams.query = (urlParams.query !== undefined && urlParams.query !== '') ? encodeURIComponent(urlParams.query) : undefined;
+
+    var listViewType = 'home';
+    switch (alliance) {
+      case 'auction':
+        listViewType = selectListViewTypeForAuction(urlParams);
+        break;
+      case 'shopping':
+      case 'amazon':
+        listViewType = selectListViewTypeForShopping(urlParams);
+        break;
+      case 'rakuten_shopping':
+        listViewType = 'search';
+        break;
+      default:
+    }
+
+    var _workUrl = _routingUrls[listViewType];
+    switch (listViewType) {
+      case 'search':
+        break;
+      case 'seller':
+        _workUrl += '/' + urlParams.seller;
+        delete urlParams.seller;
+        break;
+      case 'category':
+        if ( alliance == 'auction' ) _workUrl += '/';
+        _workUrl += urlParams.category;
+        delete urlParams.category;
+        break;
+      case 'goodSellers':
+        _workUrl += '/' + (isExist(urlParams.category) ? urlParams.category : buyee.YAC_ROOT_ID);
+        delete urlParams.category;
+        break;
+      case 'brand':
+        useParamsSetting.seller = false;
+        useParamsSetting.category = false;
+        break;
+      case 'home':
+      default:
+        return false;
+    }
+
+    return addQueryStringFromParams(_workUrl, urlParams);
+
+  }, [alliance, urlParams]);
+
+  if (url === false) {
+    $('#loading').hide();
+    return false;
+  }
+
+  $('#loading').show();
+  location.href = url;
+};
+
+var buyee = {};
+
+buyee.IS_TRUE  = 1;
+buyee.IS_FALSE = 0;
+buyee.YAC_ROOT_ID = 0;
+
+//Buyeeナビゲーションオブジェクトを生成
+buyee.Navi = function(){
+  // const
+  var NO_MATCH = -1;
+
+  // property
+  var ua         = null;
+  var appVer     = null;
+  var userAgent  = window.navigator.userAgent.toLowerCase();
+  var appVersion = window.navigator.appVersion.toLowerCase();
+
+  // methods
+  var getUA = function(){
+    return ua;
+  };
+
+  var getAppVer = function(){
+    return appVer;
+  };
+
+  /**
+   * @return boolean
+   */
+  var isPC = function(){
+    if(!isIPhone() && !isIPad() && !isAndroid() && !isIPod()){
+      return true;
+    }
+
+    return false;
+  };
+
+  /**
+   * @return boolean
+   */
+  var isIPhone = function(iosVersion){
+    if(userAgent.indexOf('iphone') != NO_MATCH){
+      if(iosVersion != undefined && iosVersion != null){
+        return true;
+      }
+
+      return true;
+    }
+
+    return false;
+  };
+
+  /**
+   * @return boolean
+   */
+  var isIPad = function(iosVersion){
+    if(userAgent.indexOf('ipad') != NO_MATCH){
+      if(iosVersion != undefined && iosVersion != null){
+        return true;
+      }
+
+      return true;
+    }
+
+    return false;
+  };
+
+  /**
+   * @return boolean
+   */
+  var isIPod = function(iosVersion){
+    if(userAgent.indexOf('ipod') != NO_MATCH){
+      if(iosVersion != undefined && iosVersion != null){
+        return true;
+      }
+
+      return true;
+    }
+
+    return false;
+  };
+
+  /**
+   * @return boolean
+   */
+  var isAndroid = function(osVersion){
+    if(userAgent.indexOf('android') != NO_MATCH){
+      if(osVersion != undefined && osVersion != null){
+        return true;
+      }
+
+      return true;
+    }
+
+    return false;
+  };
+
+  return {
+    getUA:     getUA,
+    getAppVer: getAppVer,
+    isPC:      isPC,
+    isIPhone:  isIPhone,
+    isIPad:    isIPad,
+    isIPod:    isIPod,
+    isAndroid: isAndroid
+  };
+
+}();
+
+/**
+ * URL
+ */
+(function(buyee, $){
+  var Url = (function(){
+    function Url(list){
+      this.list = list;
+    }
+
+    Url.prototype.get = function(func, args){
+      return func.apply(this, args);
+    };
+
+    return Url;
+  })();
+
+  buyee.Url = Url;
+})(buyee, jQuery);
+
+/**
+ * Service
+ */
+(function(buyee, $){
+  var Service = (function(){
+    function Service(alliance){
+      this.alliance = alliance;
+    }
+
+    Service.prototype.getAlliance = function(){
+      return this.alliance;
+    };
+
+    Service.prototype.setAlliance = function(alliance){
+      this.alliance = alliance;
+    };
+
+    return Service;
+  })();
+
+  buyee.Service = Service;
+})(buyee, jQuery);
+
+var service = new buyee.Service('auction');
+
+/**
+ * use ICANHAZ.js
+ */
+buyee.YCategory = function($, service){
+  // property
+  var lang             = null;
+  var selectedCategory = null;
+
+  var CLASS_EXPANDED = 'cat_expanded';
+  var CLASS_SELECTED = 'cat_selected';
+
+  // methods
+  var configureRootCategoryNavi = function(){
+    var $categoryList   = $('#root_category_list');
+    var $categorySelect = $('#category_select');
+
+    $categoryList.on('click', '.js_root_cat', function() {
+      $categoryList.find('.js_root_cat').removeClass(CLASS_SELECTED);
+      $(this).addClass(CLASS_SELECTED);
+      $('#root_category_name').text($(this).text());
+      removeExpandedClass();
+      selectedCategory = $(this).data('categoryid');
+    });
+
+    $categorySelect.on('click', function() {
+      toggleClass();
+    });
+
+    $categoryList.on('click', 'button' , function() {
+      removeExpandedClass();
+    });
+
+    var toggleClass = function() {
+      if ($categorySelect.hasClass(CLASS_EXPANDED)) {
+        removeExpandedClass();
+      }
+      else {
+        addExpandedClass();
+      }
+    };
+
+    var removeExpandedClass = function() {
+      $categorySelect.removeClass(CLASS_EXPANDED);
+      $categoryList.removeClass(CLASS_EXPANDED);
+    };
+
+    var addExpandedClass = function() {
+      $categorySelect.addClass(CLASS_EXPANDED);
+      $categoryList.addClass(CLASS_EXPANDED);
+    };
+
+  };
+
+  var configureCategoryNavi = function($parentElement, options) {
+    $parentElement.on('click', '.category_close', function(){
+      $('.cat_parent').removeClass(CLASS_EXPANDED);
+    });
+
+    // 親のカテゴリー
+    if (options === undefined || options.noMouseover === undefined || options.noMouseover === false) {
+      $parentElement.on((buyee.Navi.isPC()) ? 'mouseover' : 'click', '.p_search_link', function() {
+        $('.cat_parent').removeClass(CLASS_EXPANDED);
+
+        var position = $(this).position();
+        $(this).parent().children('.cat_children').css('top', position.top);
+        $(this).parent().addClass(CLASS_EXPANDED);
+
+        // link disable
+        if (!buyee.Navi.isPC()) {
+          return false;
+        }
+      });
+
+      if (buyee.Navi.isPC()) {
+        $parentElement.on('mouseleave', '.cat_parent.cat_expanded', function() {
+          $(this).removeClass(CLASS_EXPANDED);
+        });
+      }
+    }
+    else if (options.noMouseover === true) {
+      $parentElement.on('click', '.p_search_link', function(event) {
+        var $icon = $(this).children('i');
+
+        var $myParent = $(this).parent();
+        if ($myParent.hasClass(CLASS_EXPANDED)) {
+          $myParent.removeClass(CLASS_EXPANDED);
+          $icon.attr('class', 'g-feather g-feather-chevron-down');
+        }
+        else {
+          $myParent.addClass(CLASS_EXPANDED);
+          $icon.attr('class', 'g-feather g-feather-chevron-up');
+        }
+      });
+    }
+  };
+
+  var getSelectedCategoryId = function() {
+    return selectedCategory;
+  };
+
+  var setCategoryId = function(categoryId) {
+    selectedCategory = categoryId;
+  };
+
+  return {
+    configureRootCategoryNavi: configureRootCategoryNavi,
+    configureCategoryNavi    : configureCategoryNavi,
+    getSelectedCategoryId    : getSelectedCategoryId,
+    setCategoryId            : setCategoryId
+  };
+}(jQuery, service);
+
+
+/**
+ * Storage
+ *
+ * Use jquery.cookie.js
+ */
+buyee.Storage = function($){
+  var _hasStorage = (typeof localStorage !== 'undefined');
+
+  var hasStorage = function(){
+    return _hasStorage;
+  };
+
+  var _getStorageItem = function(key, storage){
+    var value = storage.getItem(key);
+
+    if(value == undefined || value == null){
+      return value;
+    }
+
+    return JSON.parse(value);
+  };
+
+  var _setStorageItem = function(key, value, storage){
+    if(value == null){
+      storage.setItem(key, value);
+    }
+    else{
+      storage.setItem(key, JSON.stringify(value));
+    }
+  };
+
+  var _removeStorageItem = function(key, storage){
+    storage.removeItem(key);
+  };
+
+  var _clearStorageItem = function(storage){
+    storage.clear();
+  };
+
+  var _getCookie = function(key){
+    return JSON.parse($.cookie(key));
+  };
+
+  var _setCookie = function(key, value){
+    $.cookie(key, JSON.stringify(value), {path: '/'});
+  };
+
+  var _removeCookie = function(key){
+    $.cookie(key, '', {path: '/', expires: -1});
+  };
+
+  // localStorage
+  var getLocalStorage = function(key, forceCookie){
+    if(_hasStorage && (forceCookie == undefined || forceCookie == false)){
+      return _getStorageItem(key, localStorage);
+    }
+    else{
+      return _getCookie(key);
+    }
+  };
+
+  var setLocalStorage = function(key, value, forceCookie){
+    if(_hasStorage && (forceCookie == undefined || forceCookie == false)){
+      _setStorageItem(key, value, localStorage);
+    }
+    else{
+      _setCookie(key, value);
+    }
+  };
+
+  var removeLocalStorage = function(key, forceCookie){
+    if(_hasStorage && (forceCookie == undefined || forceCookie == false)){
+      _removeStorageItem(key, localStorage);
+    }
+    else{
+      _removeCookie(key);
+    }
+  };
+
+  // sessionStorage
+  var getSessionStorage = function(key){
+    if(_hasStorage){
+      return _getStorageItem(key, localStorage);
+    }
+    else{
+      return _getCookie(key);
+    }
+  };
+
+  var setSessionStorage = function(key, value){
+    if(_hasStorage){
+      _setStorageItem(key, value, localStorage);
+    }
+    else{
+      _setCookie(key, value);
+    }
+  };
+
+  var removeSessionStorage = function(key){
+    if(_hasStorage){
+      _removeStorageItem(key, localStorage);
+    }
+    else{
+      _removeCookie(key);
+    }
+  };
+
+  return {
+    hasStorage:           hasStorage,
+    getLocalStorage:      getLocalStorage,
+    setLocalStorage:      setLocalStorage,
+    removeLocalStorage:   removeLocalStorage,
+    getSessionStorage:    getSessionStorage,
+    setSessionStorage:    setSessionStorage,
+    removeSessionStorage: removeSessionStorage
+  };
+}(jQuery);
+
+buyee.Funcs = function($, service){
+  var KEY_SEARCH_OPTIONS_OLD = 'search_options_list_style';
+  var KEY_SEARCH_OPTIONS = 'search_options';
+  var defaultListStyle = {auction: 'list', shopping: 'block'};
+  var searchOptions     = buyee.Storage.getLocalStorage(KEY_SEARCH_OPTIONS);
+  var searchOptionsOld  = buyee.Storage.getLocalStorage(KEY_SEARCH_OPTIONS_OLD);
+  var nonSearchOptionsFlg = false;
+
+  if (searchOptionsOld) {
+    buyee.Storage.removeLocalStorage(KEY_SEARCH_OPTIONS_OLD);
+  }
+
+  if (searchOptions === undefined || searchOptions === null) {
+    searchOptions = {
+      "listStyle": defaultListStyle[service.getAlliance()]
+    };
+    nonSearchOptionsFlg = true;
+  }
+
+
+  var getSearchOptionsKey = function(){
+    return KEY_SEARCH_OPTIONS;
+  };
+
+  var initSearchOptions = function(){
+    var selectedListStyle = defaultListStyle[service.getAlliance()];
+
+    if (nonSearchOptionsFlg == true) {
+      searchOptions.listStyle =  selectedListStyle;
+    }
+
+    changeListStyle($('.liststyle_' + searchOptions.listStyle), $('.product_field'));
+  };
+
+  var initBidsOptions = function($parentElement, sortOptionsJSON, sortValue){
+    var options = [];
+    for(key in sortOptionsJSON){
+      var attrSelected = (sortValue == key) ? ' selected="selected"' : '';
+      options.push({
+        value: key,
+        caption: sortOptionsJSON[key],
+        selected: attrSelected
+      });
+    }
+    $parentElement.append(ich.sortOptions({options: options}));
+  };
+
+  var removeSearchOptions = function(){
+    buyee.Storage.removeLocalStorage(KEY_SEARCH_OPTIONS);
+  };
+
+  var changeListStyle = function($elem, $list) {
+    var style = $elem.data('liststyle');
+
+    $elem.parent().children('.liststyle_list, .liststyle_block').removeClass('state_selected');
+    $list.removeClass(function(index, css){
+      return (css.match(/\b\S+_layout$/g) || []).join(' ');
+    });
+    if (style == 'list') {
+      $list.addClass('list_layout');
+      $elem.addClass('state_selected');
+    }
+    else if (style == 'block') {
+      $list.addClass('block_layout');
+      $elem.addClass('state_selected');
+    }
+    else {
+      style = 'list';
+      $list.addClass('list_layout');
+      $('.liststyle_list').addClass('state_selected');
+    }
+
+    searchOptions.listStyle = style;
+    buyee.Storage.setLocalStorage(KEY_SEARCH_OPTIONS, searchOptions);
+  };
+
+  var sortBids = function(sortValue, url){
+    $('#loading').show();
+    location.href = url;
+  };
+
+  var addToWatchList = function(auctionId, callback, buttonType, isSignupRedirect){
+    var option = {
+      url: buyee.Ajax.generateApiUrl('watch_list/add'),
+      params: {
+        auctionId: auctionId,
+        buttonType: buttonType,
+        isSignupRedirect: isSignupRedirect
+      },
+      timeout: 30000,
+      funcs: {
+        beforeSend: function(){
+          if(callback.beforeSend != undefined){
+            callback.beforeSend();
+          }
+        },
+        success: function(response){
+          callback.success(response.data);
+        },
+        error: function(response){
+          callback.error(response.data);
+        }
+      }
+    };
+    buyee.Ajax.putOptional(option);
+  };
+
+  var removeFromWatchList = function(auctionId, callback, forClosedAuction){
+    var option = {
+      url: buyee.Ajax.generateApiUrl('watch_list/remove'),
+      params: {
+        auctionId: auctionId,
+        forClosedAuction: (forClosedAuction !== undefined)
+      },
+      timeout: 30000,
+      funcs: {
+        beforeSend: function(){
+          if(callback.beforeSend != undefined){
+            callback.beforeSend();
+          }
+        },
+        success: function(response){
+          callback.success(response.data);
+        },
+        error: function(response){
+          callback.error(response.data);
+        }
+      }
+    };
+    buyee.Ajax.putOptional(option);
+  };
+
+  var refreshWatchList = function(callback){
+    buyee.Ajax.get(
+      buyee.Ajax.generateApiUrl('watch_list/find'),
+      {},
+      {
+        success: function(response){
+          if(callback != undefined){
+            callback();
+          }
+        }
+      }
+    );
+  }
+
+  var removeFromSnipe = function(auctionId, callback){
+
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('snipe/remove'),
+      {
+        auctionId: auctionId
+      },
+      {
+        beforeSend: function(){
+          if(callback.beforeSend != undefined){
+            callback.beforeSend();
+          }
+        },
+        success: function(response){
+          if(callback.success != undefined){
+            callback.success(response.data);
+          }
+        },error:function() {
+          if(callback.error != undefined){
+            callback.error(response.data);
+          }
+        }
+      }
+    );
+  };
+
+  var removeFromEbaySnipe = function(auctionId, callback){
+
+    buyee.Ajax.post(
+        buyee.Ajax.generateApiUrl('ebay_snipe/remove'),
+        {
+          auctionId: auctionId
+        },
+        {
+          beforeSend: function(){
+            if(callback.beforeSend != undefined){
+              callback.beforeSend();
+            }
+          },
+          success: function(response){
+            if(callback.success != undefined){
+              callback.success(response.data);
+            }
+          },error:function() {
+            if(callback.error != undefined){
+              callback.error(response.data);
+            }
+          }
+        }
+    );
+  };
+
+  var changeFromSnipe = function(auctionId, callback){
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('snipe/change'),
+      {
+        auctionId: auctionId
+      },
+      {
+        beforeSend: function(){
+          if(callback.beforeSend != undefined){
+            callback.beforeSend();
+          }
+        },
+        success: function(response){
+          if(callback.success != undefined){
+            callback.success(response.data);
+          }
+        },error:function() {
+          if(callback.error != undefined){
+            callback.error(response.data);
+          }
+        }
+      }
+    );
+  };
+
+
+  var sendBidLimitUpRequest = function(auctionId, requestPrice, callback){
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('bid_limit_up_request/send'),
+      {
+        auctionId: auctionId,
+        requestPrice: requestPrice
+      },
+      {
+        beforeSend: function(){
+          if(callback.beforeSend != undefined){
+            callback.beforeSend();
+          }
+        },
+        success: function(response){
+          if(callback.success != undefined){
+            callback.success(response.data);
+          }
+        },error:function() {
+          if(callback.error != undefined){
+            callback.error(response.data);
+          }
+        }
+      }
+    );
+  };
+
+  var convertIntager = function(val) {
+    var re = new RegExp("^[0-9]*$", "g");
+    if (val.match(re)) {
+      return val;
+    } else {
+      return false;
+    }
+  };
+
+  var changeCartQuantity = function(cartBreakdownId, storeServiceType, quantity, callback) {
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('cart/change'),
+      {
+        cartBreakdownId: cartBreakdownId,
+        storeServiceType: storeServiceType,
+        quantity: quantity
+      },
+      {
+        success: function(response) {
+          callback(response.data);
+          headerCartIconCountUpdate();
+        }
+      }
+    );
+  };
+
+  var changeUrlPurchaseCartQuantity = function(cartBreakdownId, storeServiceType, quantity, callback) {
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('cart/changeurlpurchase'),
+      {
+        cartBreakdownId: cartBreakdownId,
+        storeServiceType: storeServiceType,
+        quantity: quantity
+      },
+      {
+        success: function(response) {
+          callback(response.data);
+          headerCartIconCountUpdate();
+        }
+      }
+    );
+  };
+
+  var issueCoupon = function(couponCode, callback) {
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('coupon/issue'),
+      {
+        couponCode: couponCode
+      },
+      {
+        success: function(response) {
+          callback(response.data);
+        }
+      }
+    )
+  };
+
+  var toggleBrowser = function(callback){
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('browser/toggle'),
+      {},
+      {
+        success: function(response) {
+          callback.success(response.data);
+        }
+      }
+    )
+  };
+
+  var addRecommendItems = function(sellerId,callback){
+    buyee.Ajax.get(
+      buyee.Ajax.generateApiUrl('recommend_items/get'),
+      {
+        sellerId: sellerId
+      },
+      {
+        success: function(response){
+          callback.success(response.data);
+        }
+      }
+    );
+  };
+
+  // load my arrived baggages
+  var loadArrivedBaggages = function(offset, limit, sort, storagePeriod, warehouseGroupId, callback) {
+    buyee.Ajax.get(
+      buyee.Ajax.generateApiUrl('baggages/arrived'),
+      {
+        offset: offset,
+        limit: limit,
+        sort: sort,
+        storagePeriod: storagePeriod,
+        warehouseGroupId: warehouseGroupId
+      },
+      {
+        success: function(response) {
+          callback.success(response);
+        },
+        error: function(response) {
+          if (callback.error != undefined) {
+            callback.error(response);
+          }
+        }
+      }
+    );
+  };
+
+  // load my carts shopping
+  var loadCartsShopping = function(page, time, callback) {
+    buyee.Ajax.post(
+        buyee.Ajax.generateApiUrl('shopping/carts'),
+        {
+          page: page,
+          time: time
+        },
+        {
+          success: function(response) {
+            callback.success(response);
+          },
+          error: function(response) {
+            if (callback.error != undefined) {
+              callback.error(response);
+            }
+          }
+        }
+    );
+  };
+
+  // load my carts shoppingurlpurchase(URL購入)
+  var loadUrlPurchaseCartsShopping = function(page, time, callback) {
+    buyee.Ajax.post(
+        buyee.Ajax.generateApiUrl('shopping/urlpurchasecarts'),
+        {
+          page: page,
+          time: time
+        },
+        {
+          success: function(response) {
+            callback.success(response);
+          },
+          error: function(response) {
+            if (callback.error != undefined) {
+              callback.error(response);
+            }
+          }
+        }
+    );
+  };
+
+  // load my orders shopping
+  var loadOrdersShopping = function(page, time, serviceName, callback) {
+    buyee.Ajax.post(
+        buyee.Ajax.generateApiUrl('shopping/orders'),
+        {
+          page: page,
+          time: time,
+          serviceName: serviceName
+        },
+        {
+          success: function(response) {
+            callback.success(response);
+          },
+          error: function(response) {
+            if (callback.error != undefined) {
+              callback.error(response);
+            }
+          }
+        }
+    );
+  };
+
+  // load my order  failure shopping
+  var loadOrderFailureShopping = function(page, time, serviceName , callback) {
+    buyee.Ajax.post(
+        buyee.Ajax.generateApiUrl('shopping/order/failure'),
+        {
+          page: page,
+          time: time,
+          serviceName: serviceName
+        },
+        {
+          success: function(response) {
+            callback.success(response);
+          },
+          error: function(response) {
+            if (callback.error != undefined) {
+              callback.error(response);
+            }
+          }
+        }
+    );
+  };
+
+  var updateExternalDeliveryMethod = function(baggageNumber, locationMethod, id, storeInfo, recipientInfo, callback){
+    buyee.Ajax.put(
+      buyee.Ajax.generateApiUrl('external_delivery/update_method'),
+      {
+        baggageNumber:  baggageNumber,
+        locationMethod: locationMethod,
+        id:             id,
+        storeInfo:      storeInfo,
+        recipientInfo:  recipientInfo
+      },
+      callback
+    );
+  };
+
+  var saveSessionBaggageId = function(baggageId, callback) {
+    buyee.Ajax.put(
+      buyee.Ajax.generateApiUrl('external_delivery/save_session_baggage_id'),
+      {
+        baggageId: baggageId
+      },
+      callback
+    );
+  };
+
+  var check711StoreParameters = function(baggageId, uId, eshopId, serviceType, url, callback){
+    buyee.Ajax.put(
+      buyee.Ajax.generateApiUrl('external_delivery/check_taiwan711_map_parameters'),
+      {
+        baggageId:   baggageId,
+        uId:         uId,
+        eshopId:     eshopId,
+        serviceType: serviceType,
+        url:         url
+      },
+      callback
+    );
+  };
+
+  var changeExternalDeliveryLocationMethod = function(locationMethodId, baggageNumber, callback){
+    buyee.Ajax.put(
+      buyee.Ajax.generateApiUrl('external_delivery/change_location_method'),
+      {
+        locationMethodId:  locationMethodId,
+        baggageNumber: baggageNumber,
+      },
+      callback
+    );
+  };
+
+  var numberFormat = function(num) {
+    if(num == null){
+      return 0;
+    }
+    num = new String(num).replace(/,/g, "");
+    while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
+
+    return num;
+  };
+
+  var numberFormatUsd = function(num) {
+    if(num == null){
+        return 0;
+    }
+    num = new String(num).replace(/,/g, "");
+    num = parseFloat(num).toFixed(2);
+    while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
+
+    return num;
+  };
+
+  var changeWrapperAlliance = function(){
+    $('#wrapper').removeClass().addClass(service.getAlliance());
+  };
+
+  var assignedCategoryName = function(alliance, categoryName){
+    var $rootCategoryName = $('#root_category_name');
+
+    if(categoryName != undefined){
+      $rootCategoryName.children('.cat_name' + alliance).text(categoryName);
+    }
+    $rootCategoryName.children('.cat_name').removeClass('expanded');
+    $rootCategoryName.children('.cat_name.' + alliance).addClass('expanded');
+    $('.linkarea').children('li').removeClass('available');
+    $('.link_' +  alliance).addClass('available');
+  };
+
+  var fxNumberFormat = function(price, currencyUnit, format, decPoint, thousandsSep, digits){
+    var powValue    = Math.pow(10, digits);
+    var calcPrice   = price;
+    var strPrice    = price.toString();
+    var decPosition = null;
+
+    //小数点以下の桁数が通貨の規定桁数なら桁数以下の繰り上げ処理を行わない
+    if (isNeedRounding(price, digits)) {
+      calcPrice = price *  powValue;
+      //通貨の規定の桁数以下が0だったら切り捨て、それ以外だったら切り上げる
+      strPrice = calcPrice.toString();
+      decPosition = strPrice.lastIndexOf('.');
+      var underDec = strPrice.substring(decPosition + 1);
+      underDec = Number(underDec)
+      if (underDec == 0){
+        calcPrice = Math.floor(calcPrice);
+      } else {
+        calcPrice = Math.ceil(calcPrice);
+      }
+      calcPrice = calcPrice / powValue;
+    }
+    var num = calcPrice.toString();
+    var aryNum = num.split(".");
+    var fixedNum = numberFormat(aryNum[0]);
+    if (thousandsSep != ',') {
+      while (fixedNum.indexOf(',' ,0) != -1) {
+        fixedNum = fixedNum.replace(',', thousandsSep);
+      }
+    }
+
+    var zeros = '';
+    if (digits > 0) {
+      for (i = 0; i < digits; i++) {
+        zeros = zeros + '0';
+      }
+    }
+    if (aryNum.length == 2 && digits > 0) {
+      var decNum = aryNum[1].toString().substring(0, digits);
+      decNum = (decNum + zeros).slice(0, digits);
+      fixedNum += decPoint + decNum;
+    } else if (aryNum.length == 1 && digits > 0) {
+    	fixedNum += decPoint + zeros;
+    }
+
+    if (format == 1) {
+      fixedNum = fixedNum + currencyUnit;
+    } else {
+      fixedNum = currencyUnit + fixedNum;
+    }
+
+    return fixedNum;
+  }
+
+  // 丸め処理を行うかの判定を行う
+  var isNeedRounding = function (price, digits)
+  {
+    if (digits < 0) {
+      price  = price * Math.pow(10, digits);
+      digits = 0;
+    }
+
+    var strPrice = price.toString();
+    var decPosition = strPrice.lastIndexOf('.');
+    var decLength = strPrice.length - decPosition - 1;
+
+    return (decLength > digits && decPosition != -1);
+  }
+
+  //fx価格の計算（小数点以下の誤差対策）
+  var fxMultipleCalc = function(jpyPrice, rate, rateDigits) {
+    if (rateDigits == 0) {
+      return jpyPrice * rate;
+    }
+
+    var rateToInt = removeDecPoint(rate, rateDigits);
+    var calcPrice = jpyPrice * rateToInt;
+
+    return addDecPoint(calcPrice, rateDigits);
+  }
+  //配列に格納された数値を加算して合計額を返却する。(誤差対策）
+  var fxNumbersAdd = function(fxNumbers, digits) {
+    //配列から数値を取り出し、小数点以下の桁数を確認
+    var key;
+    var returnNum = 0;
+    for (key in fxNumbers) {
+      var num = fxNumbers[key].toString();
+      var intNum = removeDecPoint(fxNumbers[key], digits);
+      returnNum += Number(intNum);
+    }
+
+    //小数点以下の丸めが0以下の場合は、そのまま返す。
+    if (digits <= 0) {
+      return returnNum;
+    }
+
+    return returnNum / Math.pow(10, digits);
+  }
+
+  //小数を[10^underDigits]倍して整数にする（誤差対策のため文字列として操作を行う）
+  var removeDecPoint = function(num, underDigits) {
+
+    if (underDigits == 0) {
+      return num;
+    }
+    var strNum = num.toString();
+    var aryNum = strNum.split(".");
+    var intNum = aryNum[0];
+
+    var zeros = '';
+    if (underDigits > 0) {
+      for (i = 0; i < underDigits; i++) {
+        zeros = zeros + '0';
+      }
+    }
+    if (aryNum.length == 2 && underDigits > 0) {
+      var decNum = aryNum[1].toString().substring(0, underDigits);
+      decNum = (decNum + zeros).slice(0, underDigits);
+      intNum += decNum;
+    } else if (aryNum.length == 1 && underDigits > 0) {
+      intNum += zeros;
+    }
+
+    return Number(intNum);
+  }
+
+  //整数を[10^underDigits]で割って少数にする（誤差対策のため文字列として操作を行う）
+  var addDecPoint = function(num, underDigits) {
+    if (underDigits == 0) {
+      return num;
+    }
+    var strNum = num.toString();
+    //桁数がunderDigits以下の場合には足りない分だけ頭に0をつける
+    var numLength = strNum.length;
+    if (numLength < underDigits) {
+      for (i = 0; i < underDigits - numLength + 1; i++) {
+        strNum = '0' + strNum;
+      }
+      numLength = underDigits + 1;
+    }
+    //strNumを後ろから数えてunderDigits桁目で分割し、小数点を挟んで返却
+    var decPoint = numLength - underDigits;
+    var intPart = strNum.substr(0, decPoint);
+    var decPart = strNum.substr(decPoint);
+
+    var returnNum = intPart + '.' + decPart;
+
+    return Number(returnNum);
+  }
+
+  var checkCartItem = function(cartId, cartBreakdownListString, callback) {
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('cart/check'),
+      {
+        cartId: cartId,
+        cartBreakdownListString: cartBreakdownListString
+      },
+      {
+        success: function(response) {
+          callback(response.data);
+        }
+      }
+    );
+  };
+
+  var signupPreClickedSns = function(type, message, callback) {
+    buyee.Ajax.put(
+      buyee.Ajax.generateApiUrl('signup_pre/clicked_sns'),
+      {
+        type:    type,
+        message: message
+      },
+      callback
+    );
+  };
+
+  var headerCartIconCountUpdate = function() {
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('cart/item/count'),
+      {
+      },
+      {
+        success: function(response) {
+          if (response.data.count == 0 ) {
+            $('.counterBadge').text('');
+            $('.counterBadge').removeClass('counterBadge');
+          } else {
+            $('.counterBadge').text(response.data.count);
+          }
+        }
+      }
+    );
+  };
+
+  var changeCartOrderQuantity = function(cartBreakdownId, storeServiceType, quantity, cartId, couponId, planId, callback) {
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('cartOrder/change_cart'),
+      {
+        cartBreakdownId: cartBreakdownId,
+        storeServiceType: storeServiceType,
+        quantity: quantity,
+        cartId: cartId,
+        couponId: couponId,
+        planId: planId,
+      },
+      callback
+    );
+  };
+
+  var calculateCartOrderAmount = function(cartId, couponId, planId, optionId, callback) {
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('cartOrder/total_amount'),
+      {
+        cartId: cartId,
+        couponId: couponId,
+        planId: planId,
+        optionId: optionId,
+      },
+      callback
+    );
+  };
+
+  var buyeeWalletHistoryDetail = function(historyId, callback) {
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('history/detail'),
+      {
+        historyId: historyId,
+      },
+      callback
+    );
+  };
+
+  var buyeeWalletHoldChange = function(holdId, callback, status, refundType) {
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('hold/change'),
+      {
+        holdId: holdId,
+        status: status,
+        refundType: refundType,
+      },
+      callback
+    );
+  };
+
+  var buyeeWalletHoldDetail = function(holdId, callback) {
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('hold/breakdown'),
+      {
+        holdId: holdId,
+      },
+      callback
+    );
+  };
+
+  var buyeeWalletBalanceCancel = function(balanceId, callback) {
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('balance/cancel'),
+      {
+        balanceId: balanceId,
+      },
+      callback
+    );
+  };
+
+  return {
+    getSearchOptionsKey:          getSearchOptionsKey,
+    initSearchOptions:            initSearchOptions,
+    initBidsOptions:              initBidsOptions,
+    removeSearchOptions:          removeSearchOptions,
+    changeListStyle:              changeListStyle,
+    sortBids:                     sortBids,
+    addToWatchList:               addToWatchList,
+    removeFromWatchList:          removeFromWatchList,
+    refreshWatchList:             refreshWatchList,
+    removeFromSnipe:              removeFromSnipe,
+    removeFromEbaySnipe:          removeFromEbaySnipe,
+    changeFromSnipe:              changeFromSnipe,
+    convertIntager:               convertIntager,
+    changeCartQuantity:           changeCartQuantity,
+    changeUrlPurchaseCartQuantity:changeUrlPurchaseCartQuantity,
+    numberFormat:                 numberFormat,
+    numberFormatUsd:              numberFormatUsd,
+    changeWrapperAlliance :       changeWrapperAlliance,
+    assignedCategoryName:         assignedCategoryName,
+    issueCoupon:                  issueCoupon,
+    toggleBrowser:                toggleBrowser,
+    addRecommendItems:            addRecommendItems,
+    sendBidLimitUpRequest:        sendBidLimitUpRequest,
+    loadArrivedBaggages:          loadArrivedBaggages,
+    loadCartsShopping:            loadCartsShopping,
+    loadUrlPurchaseCartsShopping: loadUrlPurchaseCartsShopping,
+    loadOrdersShopping:           loadOrdersShopping,
+    loadOrderFailureShopping:     loadOrderFailureShopping,
+    updateExternalDeliveryMethod: updateExternalDeliveryMethod,
+    saveSessionBaggageId:         saveSessionBaggageId,
+    check711StoreParameters:      check711StoreParameters,
+    changeExternalDeliveryLocationMethod: changeExternalDeliveryLocationMethod,
+    fxNumberFormat:               fxNumberFormat,
+    fxNumbersAdd:                 fxNumbersAdd,
+    fxMultipleCalc:               fxMultipleCalc,
+    removeDecPoint:               removeDecPoint,
+    addDecPoint:                  addDecPoint,
+    checkCartItem:                checkCartItem,
+    signupPreClickedSns:          signupPreClickedSns,
+    changeCartOrderQuantity:      changeCartOrderQuantity,
+    calculateCartOrderAmount:     calculateCartOrderAmount,
+    buyeeWalletHoldChange:        buyeeWalletHoldChange,
+    buyeeWalletHistoryDetail:     buyeeWalletHistoryDetail,
+    buyeeWalletHoldDetail:        buyeeWalletHoldDetail,
+    buyeeWalletBalanceCancel:     buyeeWalletBalanceCancel,
+  };
+}(jQuery, service);
+
+buyee.Ajax = function($){
+  var DEFAULT_API_URL_BASE = location.protocol + '//' + location.host + '/api/v1/';
+
+  var generateApiUrl = function(method){
+    return DEFAULT_API_URL_BASE + method;
+  };
+
+  var ajax = function(type, api, params, funcs){
+    // timeoutが設定されていたらajaxOptionalに処理を渡す
+    if(funcs.timeout > 0){
+      var option = {
+        type: type,
+        url: api,
+        params: params,
+        timeout: funcs.timeout,
+        funcs: funcs
+      };
+      ajaxOptional(option);
+    } else {
+      $.ajax({
+        type: type,
+        url: api,
+        data: params,
+        dataType: 'json',
+        beforeSend: function(){
+          if((funcs.beforeSend != undefined)){
+            funcs.beforeSend();
+          }
+        }
+      })
+      .done(function(response){
+        if(funcs.success != undefined){
+          funcs.success(response);
+        }
+      })
+      .error(function(response){
+        if(funcs.error != undefined){
+          funcs.error(response);
+        }
+      })
+      .always(function(){
+        if(funcs.always != undefined){
+          funcs.always();
+        }
+      });
+    }
+  };
+
+  var post = function(api, params, funcs){
+    ajax('POST', api, params, funcs);
+  };
+
+  var get = function(api, params, funcs){
+    ajax('GET', api, params, funcs);
+  };
+
+  // temporary
+  var put = function(api, params, funcs){
+    ajax('POST', api, params, funcs);
+  };
+
+  // タイムアウト機能付きajax処理
+  var ajaxOptional = function(option){
+    funcs = option.funcs;
+    $.ajax({
+      type:     option.type,
+      url:      option.url,
+      data:     option.params,
+      dataType: 'json',
+      timeout:  option.timeout,
+      beforeSend: function(){
+        if((funcs.beforeSend != undefined)){
+          funcs.beforeSend();
+        }
+      }
+    })
+    .done(function(response){
+      if(funcs.success != undefined){
+        funcs.success(response);
+      }
+    })
+    .error(function(response){
+      if(funcs.error != undefined){
+        funcs.error(response);
+      }
+    })
+    .always(function(){
+      if(funcs.always != undefined){
+        funcs.always();
+      }
+    });
+  };
+
+  var putOptional = function(option){
+    option.type = 'POST';
+    ajaxOptional(option);
+  };
+
+  return {
+    generateApiUrl: generateApiUrl,
+    post:           post,
+    get:            get,
+    put:            put,
+    putOptional:    putOptional
+  };
+}(jQuery);
+
+/**
+ * shipping methods
+ */
+buyee.ShippingMethods = (function($){
+  function ShippingMethods(){
+    this.baggage = null;
+  }
+
+  /**
+   * build
+   */
+  ShippingMethods.prototype.build = function(data, callback){
+    var source = {};
+
+    source.isEbay = data.isEbay;
+
+    source.header = new ShippingMethodsHeader(data.source.baggageNumber, _filter(data.source.methods, function(method){ return method.selected === true; }));
+
+    source.methods = (function(list){
+      var methods = [];
+
+      for (var i = 0, limit = list.length; i < limit; i++) {
+        methods.push(new ShippingMethod(list[i]));
+      }
+
+      return methods;
+    })(data.source.methods);
+
+    if (callback !== undefined) {
+      callback(source);
+    }
+
+    return this;
+  }
+
+  /**
+   * load
+   */
+  ShippingMethods.prototype.load = function(baggageNumber, callback){
+    buyee.Ajax.get(
+      buyee.Ajax.generateApiUrl('shipping/load_methods'),
+      {
+        baggageNumber: baggageNumber
+      },
+      callback
+    );
+  };
+
+  /**
+   * update
+   */
+  ShippingMethods.prototype.update = function(baggageNumber, id, callback){
+    buyee.Ajax.putOptional({
+      url:      buyee.Ajax.generateApiUrl('shipping/update_method'),
+      params:   {
+                  baggageNumber: baggageNumber,
+                  id:            id
+                },
+      funcs:    callback,
+      timeout:  30000  // 30秒でタイムアウトさせる
+    });
+  };
+
+  function ShippingMethod(source){
+    this.id                                   = source.id;
+    this.name                                 = source.name;
+    this.price                                = source.price;
+    this.international_delivery_insurance_fee = source.international_delivery_insurance_fee,
+    this.shortestDeliveryDays                 = source.shortest_delivery_days
+    this.latestDeliveryDays                   = source.latest_delivery_days
+    this.deliveryDays                         = null;
+    this.available                            = source.available;
+    this.message                              = source.message;
+    this.selected                             = source.selected;
+    this.isRecommend                          = source.isRecommend;
+    this.isPackRecommend                      = source.isPackRecommend;
+    this.isPostalCustomClearance              = source.isPostalCustomClearance;
+    this.isDpexcpRecommend                    = source.isDpexcpRecommend;
+    this.isNotRecommended                     = source.isNotRecommended;
+    this.isSupportRecommend                   = source.isSupportRecommend;
+    this.isEbay                               = source.isEbay;
+    this.isCdekCpRecommend                    = source.isCdekCpRecommend;
+  }
+
+  function ShippingMethodsHeader(baggageNumber, source){
+    this.baggageNumber = baggageNumber;
+    this.methodName    = source.name;
+    this.countryName   = source.country_name;
+    this.totalWeight   = source.weight_gram;
+    this.weightUnit    = source.weight_unit;
+    this.isEbayHeader  = source.isEbay;
+    this.volumetricWeight = source.volumetric_weight;
+    this.sizeCm = source.size_cm;
+    this.longestSideGrithCm = source.longest_side_grith_cm;
+    this.sizeUnit = source.size_unit;
+    this.isExistSize = source.isExistSize;
+  }
+
+  function _filter(array, callback){
+    for (var i = 0, limit = array.length; i < limit; i++) {
+      var resource = array[i];
+
+      for (key in resource) {
+        if (callback(resource)) {
+          return resource;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  return ShippingMethods;
+})(jQuery);
+
+buyee.OrderShopping = (function($){
+  function OrderShopping(){
+  }
+  OrderShopping.prototype.cancel = function(orderNumber, reason, callback){
+    buyee.Ajax.post(
+      buyee.Ajax.generateApiUrl('order_shopping/cancel'),
+      {
+        orderNumber: orderNumber,
+        reason: reason
+      },
+      callback
+    );
+  };
+  return OrderShopping;
+})(jQuery);
+
+buyee.Coupon = (function($){
+  function Coupon(){
+    this.DISCOUNT_UNIT_RATE  = 1;
+    this.DISCOUNT_UNIT_PRICE = 2;
+    this.DISCOUNT_TYPE_BUYEE_FEE = 1;
+    this.DISCOUNT_TYPE_SHIPPING_FEE = 2;
+  }
+
+  Coupon.prototype.discountCalclator = function(discountUnit, discountValue, discountLimitAmount){
+    if (discountUnit == this.DISCOUNT_UNIT_RATE) {
+      return function(originalPrice){
+        var discountAmount = originalPrice * (discountValue / 100);
+        if (discountLimitAmount && discountAmount > discountLimitAmount) {
+          discountAmount = discountLimitAmount;
+        }
+
+        var result = Math.ceil(originalPrice - discountAmount);
+
+        return (result < 0) ? 0 : result;
+      }
+    }
+
+    if (discountUnit == this.DISCOUNT_UNIT_PRICE) {
+      return function(originalPrice){
+        var result = Math.ceil(originalPrice - discountValue);
+
+        return (result < 0) ? 0 : result;
+      }
+    }
+
+    return function(originalPrice){
+      return originalPrice;
+    }
+  };
+
+
+
+  return Coupon;
+})(jQuery);
+
+buyee.startLoading = function($el){
+  if ($el != null) {
+    $el.show();
+  }
+  else {
+    $('#loading').show();
+  }
+}
+
+buyee.endLoading = function($el){
+  if ($el != null) {
+    $el.hide();
+  }
+  else {
+    $('#loading').hide();
+  }
+}
+
+buyee.reduce = function(data, exec, initial){
+  var result = (initial != null) ? initial : null;
+
+  $.each(data, function(k, v){
+    result = exec(result, v, k);
+  });
+
+  return result;
+};
+
+buyee.reject = function(data, predicate){
+  return $.grep(data, function(v, k){ return predicate(v, k); }, true);
+};
+
+// <a href="#***">の場合、スクロール処理を追加
+$(function(){
+  $('a[href*=#]').click(function() {
+    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+      var $target = $(this.hash);
+      $target = $target.length && $target || $('[name=' + this.hash.slice(1) +']');
+      if ($target.length) {
+        var targetOffset = $target.offset().top;
+        $('html,body').animate({ scrollTop: targetOffset }, 800, 'quart');
+        return false;
+      }
+    }
+  });
+
+  if(buyee.Navi.isPC()){
+    $('#search_bt').on('click', function(){
+      $('#loading').show();
+    });
+  }
+
+  $.fn.buyeePayPalPopUp = function(culture){
+    var attrCulture = (culture == 'ja') ? 'jp' : 'c2';
+    window.open(
+      'https://www.paypal.com/' + attrCulture + '/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside',
+      'olcwhatispaypal',
+      'toolbar=no,location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=400, height=350'
+    );
+  }
+});
